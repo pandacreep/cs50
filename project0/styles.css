@@ -1,0 +1,52 @@
+h1 {
+  color: darkblue;
+  text-align: left;
+  font-family: sans-serif;
+  background-color: lightblue;
+  padding: 5px;
+  padding-left: 10px; }
+
+ol li {
+  color: darkblue; }
+
+ul li {
+  color: darkblue; }
+
+p {
+  color: black;
+  font-style: oblique; }
+
+div {
+  color: black;
+  font-size: 18px;
+  font-style: normal; }
+  div p {
+    color: red;
+    font-size: 14px; }
+
+.variant1, .variant2, .variant3, .variant4, .variant5, .variant6 {
+  font-family: Arial;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 20px;
+  margin: 20px; }
+
+.variant1 {
+  background-color: green; }
+
+.variant2 {
+  background-color: orange; }
+
+.variant3 {
+  background-color: yellow; }
+
+.variant4 {
+  background-color: red; }
+
+.variant5 {
+  background-color: brown; }
+
+.variant6 {
+  background-color: grey; }
+
+/*# sourceMappingURL=styles.css.map */

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My Webpage</title>
+        <link rel="stylesheet" href="styles.css">
+        <style>
+            @media print {
+                .screen-only {
+                    display: none;
+                }
+            }
+            @media (min-width: 900px) {
+                .screen-only {
+                    color: blue;
+                }
+            }
+            @media (max-width: 899px) {
+                .screen-only {
+                    color: red;
+                }
+            }
+        </style>
+    </head>
+    <body>
+      <h1>Other topics</h1>
+      <h2>Why I love python</h2>
+      Just look at these cue animal :)
+      <div>
+          <img src="depositphotos_11506209-stock-illustration-snake.jpg" width=200>
+      </div>
+      <div class="screen-only">
+            <p>This will not appear when printed</p>
+            Here is the very confidential information is placed!
+            Python is a very intuitive programm language for beginners :)
+            By the way font color depends on the screen size - you can check this.
+      </div>
+      <h1>Site navigation</h1>
+      <div>
+        <ul>
+          <li>
+            <a href="index.html">Start page</a>
+          </li>
+          <li>
+            <a href="data-mining.html">Data mining</a>
+          </li>
+          <li>
+            <a href="python.html">Python</a>
+          </li>
+        </ul>
+      </div>
+    </body>
+    </body>
+</html>

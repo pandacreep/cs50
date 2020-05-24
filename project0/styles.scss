@@ -1,0 +1,74 @@
+$color1: darkblue;
+$color2: black;
+$color3: red;
+
+h1 {
+    color: $color1;
+    text-align: left;
+    font-family: sans-serif;
+    background-color: lightblue;
+    padding: 5px;
+    padding-left: 10px
+}
+
+ol li {
+    color: $color1
+}
+
+ul li {
+    color: $color1
+}
+
+p {
+    color: $color2;
+    font-style: oblique;
+}
+
+div {
+    color: $color2;
+    font-size: 18px;
+    font-style: normal;
+
+    p {
+        color: $color3;
+        font-size: 14px;
+    }
+}
+
+%message {
+    font-family: Arial;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 20px;
+    margin: 20px;
+}
+
+.variant1 {
+    @extend %message;
+    background-color: green;
+}
+
+.variant2 {
+    @extend %message;
+    background-color: orange;
+}
+
+.variant3 {
+    @extend %message;
+    background-color: yellow;
+}
+
+.variant4 {
+    @extend %message;
+    background-color: red;
+}
+
+.variant5 {
+    @extend %message;
+    background-color: brown;
+}
+
+.variant6 {
+    @extend %message;
+    background-color: grey;
+}
