@@ -27,7 +27,7 @@ unordered list
 image inclusion
 @media query
 
-#styles.scss
+# styles.scss
 SCSS variables
 SCSS nesting
 SCSS inheritance
