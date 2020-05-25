@@ -1,9 +1,16 @@
 {% extends "layout.html" %}
 
 {% block heading %}
-Index
+Main page
 {% endblock %}
 
 {% block body %}
-Index body change
+Please
+<a href="{{ url_for('login') }}">
+    login
+</a>
+or
+<a href="{{ url_for('register') }}">
+    register
+</a>
 {% endblock %}
