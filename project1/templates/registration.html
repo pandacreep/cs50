@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+Registration
+{% endblock %}
+
+{% block body %}
+Please submit registration form<br><br>
+
+<form action="{{ url_for('register') }}" method="post">
+    <div class="form-group">
+        Your Username<br>
+        <input class="form-control" type="input" name="user_name" placeholder="Enter user name">
+    </div>
+    <div class="form-group">
+        Your password<br>
+        <input class="form-control" type="password" name="user_pass" placeholder="Enter password">
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary">Submit</button>
+    </div>
+</form>
+{% endblock %}
