@@ -25,16 +25,29 @@ db = scoped_session(sessionmaker(bind=engine))
 def index():
     return render_template("index.html")
 
-@app.route("/registration")
-def registration():
-    return render_template("registration.html")
-
-@app.route("/register", methods=["POST"])
+@app.route("/register")
 def register():
+    return render_template("register.html")
+
+@app.route("/check_register", methods=["POST"])
+def check_register():
     user_name = request.form.get("user_name")
     user_pass = request.form.get("user_pass")
-    return render_template("register.html", user_name=user_name, user_pass=user_pass)
+    if db.execute("SELECT * FROM accounts WHERE user_name = :user_name", {"user_name": user_name}).rowcount > 0:
+        return render_template("error.html", message="There is already user with such a name")
+    db.execute("INSERT INTO accounts (user_name, user_pass) VALUES (:user_name, :user_pass)",
+            {"user_name": user_name, "user_pass": user_pass})
+    db.commit()
+    return render_template("success_register.html")
 
 @app.route("/login")
 def login():
     return render_template("login.html")
+
+@app.route("/check_login", methods=["POST"])
+def check_login():
+    user_name = request.form.get("user_name")
+    user_pass = request.form.get("user_pass")
+    if db.execute("SELECT * FROM accounts WHERE user_name = :user_name AND user_pass = :user_pass", {"user_name": user_name, "user_pass": user_pass}).rowcount == 0:
+            return render_template("error.html", message="Invalid user name or password")
+    return render_template("success_login.html")
