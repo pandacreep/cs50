@@ -4,17 +4,6 @@
     Error
 {% endblock %}
 
-{% block header %}
-    {% if user_name == "" %}
-        You are not authorized
-    {% else %}
-        {{ user_name }}
-        <a href="{{ url_for('log_out') }}">
-            log out
-        </a>
-    {% endif %}
-{% endblock %}
-
 {% block body %}
     <h1>Error</h1>
 

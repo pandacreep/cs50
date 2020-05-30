@@ -5,12 +5,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     </head>
     <body>
-      <div class="header">
-          {% block header %}
-          {% endblock %}
-      </div>
-      <hr>
-      {% block header_r %}
+      {% block header %}
           <table width=100% class="table_all">
               <tr>
                   <th class="table_left">
