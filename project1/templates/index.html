@@ -5,13 +5,13 @@ Main page
 {% endblock %}
 
 {% block header %}
-    {% if log_status %}
+    {% if user_name == "" %}
+        You are not authorized
+    {% else %}
         {{ user_name }}
         <a href="{{ url_for('log_out') }}">
             log out
         </a>
-    {% else %}
-        You are not authorized
     {% endif %}
 {% endblock %}
 

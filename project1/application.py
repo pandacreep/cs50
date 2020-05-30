@@ -24,17 +24,11 @@ session={}
 
 @app.route("/")
 def index():
-    print("session:", session)
-    if session.get("user_id") is None:
-        return render_template("index.html", log_status=False)
-    return render_template("index.html", log_status=True, user_name=session["user"][1])
+    return render_template("index.html", user_name=user_authorized())
 
 @app.route("/register")
 def register():
-    print("session:", session)
-    if session.get("user_id") is None:
-        return render_template("register.html", log_status=False)
-    return render_template("register.html", log_status=True, user_name=session["user"][1])
+    return render_template("register.html", user_name=user_authorized())
 
 @app.route("/check_register", methods=["POST"])
 def check_register():
@@ -42,63 +36,41 @@ def check_register():
     user_name = request.form.get("user_name")
     user_pass = request.form.get("user_pass")
     if db.execute("SELECT * FROM accounts WHERE user_name = :user_name", {"user_name": user_name}).rowcount > 0:
-        return render_template("error.html", message="There is already user with such a name")
+        return render_template("error.html", user_name=user_authorized(), message="There is already user with such a name")
     db.execute("INSERT INTO accounts (user_name, user_pass) VALUES (:user_name, :user_pass)",
             {"user_name": user_name, "user_pass": user_pass})
     db.commit()
-    return render_template("success_register.html")
-    if session.get("user_id") is None:
-        return render_template("success_register.html", log_status=False)
-    return render_template("success_register.html", log_status=True, user_name=session["user"][1])
+    return render_template("success_register.html", user_name=user_authorized())
 
 @app.route("/login")
 def login():
-    print("session:", session)
-    if session.get("user_id") is None:
-        return render_template("login.html", log_status=False)
-    return render_template("login.html", log_status=True, user_name=session["user"][1])
+    return render_template("login.html", user_name=user_authorized())
 
 
 @app.route("/check_login", methods=["GET", "POST"])
 def check_login():
-    print("session:", session)
     user_name = request.form.get("user_name")
     user_pass = request.form.get("user_pass")
     user = db.execute("SELECT id, user_name FROM accounts WHERE user_name = :user_name AND user_pass = :user_pass"
         , {"user_name": user_name, "user_pass": user_pass})
     if user.rowcount == 0:
-            return render_template("error.html", message="Invalid user name or password")
+            return render_template("error.html", user_name=user_authorized(), message="Invalid user name or password")
     for _ in user:
-        session["user_id"] = _[0]
-        session["user_name"] =  _[1]
-        session["user"] = (_[0], _[1])
-    print("session:", session)
-    if session.get("user_id") is None:
-        return render_template("login.html", log_status=False)
-    return render_template("login.html", log_status=True, user_name=session["user"][1])
+        session["user_id"] = (_[0], _[1])
+    print("session after login:", session)
+    return render_template("login.html", user_name=user_authorized())
 
 
 @app.route("/log-out")
 def log_out():
     del session["user_id"]
-    del session["user_name"]
-    del session["user"]
-    return render_template("index.html", log_status=False)
+    return render_template("index.html", user_name=user_authorized())
 
-def check_authorization():
+
+def user_authorized():
+    print("user_authorized=> session:", session)
     if session.get("user_id") is None:
-        print("check_login=> user_id is None!")
-        return False, "", ""
+        user_name = ""
     else:
-        print("check_login=> user_id is:", session["user_id"])
-        print("check_login=> user_name is:", session["user_name"])
-        return True, session["user_id"], session["user_name"]
-
-def test_delete():
-    user = db.execute("SELECT id, user_name FROM accounts WHERE user_name = 'dima' AND user_pass = 'dima'")
-    print("rowcount:", user.rowcount)
-    for i in user:
-        print("i[0]=", i[0])
-        print("i[1]=", i[1])
-    #print("session:", session)
-#test_delete()
+        user_name = session["user_id"][1]
+    return user_name
