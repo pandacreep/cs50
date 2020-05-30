@@ -4,6 +4,20 @@
     Login
 {% endblock %}
 
+{% block header %}
+    {% if log_status %}
+        {{ user_name }}
+        <a href="{{ url_for('log_out') }}">
+            log out
+        </a>
+    {% else %}
+        You are not authorized
+    {% endif %}
+{% endblock %}
+
 {% block body %}
     Login was successful
+    {{ ss }}
+    <br>
+    change code here
 {% endblock %}

@@ -4,6 +4,17 @@
     Registration
 {% endblock %}
 
+{% block header %}
+    {% if log_status %}
+        {{ user_name }}
+        <a href="{{ url_for('log_out') }}">
+            log out
+        </a>
+    {% else %}
+        You are not authorized
+    {% endif %}
+{% endblock %}
+
 {% block body %}
     Registration was successful
     <a href="{{ url_for('login') }}">
