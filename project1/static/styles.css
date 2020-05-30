@@ -8,3 +8,15 @@ h1 {
     font-family: Arial, sans-serif;
     text-align: right;
 }
+
+.table_left {
+    color: black;
+    font-family: Arial, sans-serif;
+    text-align: left;
+}
+
+.table_right {
+    color: black;
+    font-family: Arial, sans-serif;
+    text-align: right;
+}
