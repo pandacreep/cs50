@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Search results
+{% endblock %}
+
+{% block body %}
+    <h1>Search results</h1>
+    {% if message == "No results are found" %}
+    {{ message }}
+    {% else %}
+    <div class="form-group">
+        <ul>
+            {% for line in search_result %}
+            <li>
+                {{ line.isbh }}: {{ line.title }}, {{ line.author }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+{% endblock %}
