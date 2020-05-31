@@ -20,15 +20,19 @@ Session(app)
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
+# Initialize variables
 session={}
+
 
 @app.route("/")
 def index():
     return render_template("index.html", user_name=user_authorized())
 
+
 @app.route("/register")
 def register():
     return render_template("register.html", user_name=user_authorized())
+
 
 @app.route("/check_register", methods=["POST"])
 def check_register():
@@ -41,6 +45,7 @@ def check_register():
             {"user_name": user_name, "user_pass": user_pass})
     db.commit()
     return render_template("success_register.html", user_name=user_authorized())
+
 
 @app.route("/login")
 def login():
@@ -57,8 +62,7 @@ def check_login():
             return render_template("error.html", user_name=user_authorized(), message="Invalid user name or password")
     for _ in user:
         session["user_id"] = (_[0], _[1])
-    print("session after login:", session)
-    return render_template("login.html", user_name=user_authorized())
+    return render_template("index.html", user_name=user_authorized())
 
 
 @app.route("/log-out")
@@ -67,8 +71,29 @@ def log_out():
     return render_template("index.html", user_name=user_authorized())
 
 
+@app.route("/search", methods=["POST"])
+def search():
+    if user_authorized() == "":
+        return render_template("error.html", user_name=user_authorized(), message="Please login before making any search")
+    search_string = request.form.get("search_string")
+    search_string = '%' + search_string +'%'
+    sql_script = """
+    SELECT * FROM books
+    WHERE title like :search_string
+    OR author like :search_string
+    OR isbh like :search_string
+    """
+    search_result = db.execute(sql_script, {"search_string": search_string})
+    if search_result.rowcount == 0:
+        return render_template("search_result.html", user_name=user_authorized(), message="No results are found", search_result=search_result)
+    return render_template("search_result.html",
+                            user_name=user_authorized(),
+                            search_result=search_result)
+
+
+# Check you anybody is logged in. Return user name. If nobody is logged in return empty string
 def user_authorized():
-    print("user_authorized=> session:", session)
+    #print("user_authorized=> session:", session)
     if session.get("user_id") is None:
         user_name = ""
     else:
