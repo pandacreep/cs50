@@ -9,7 +9,9 @@
           <table width=100% class="table_all">
               <tr>
                   <th class="table_left">
-                      <a href="{{ url_for('index') }}">Home</a>
+                      <a href="{{ url_for('index') }}">Home</a><a>   </a>
+                      <a href="{{ url_for('register') }}">Register</a><a>   </a>
+                      <a href="{{ url_for('login') }}">Login</a><a>   </a>
                   </th>
                   <th class="table_right">
                     {% if user_name == "" %}
