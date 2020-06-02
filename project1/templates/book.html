@@ -5,10 +5,15 @@ Book information
 {% endblock %}
 
 {% block body %}
-    <h1>Detailed Book Information</h1>
-    {{ message }}
-    <div class="form-group">
-        <ul>
-        </ul>
-    </div>
+<h1>Detailed Book Information</h1>
+<ul>
+    <li>ISBH: {{ book.isbh }}</li>
+    <li>Title: {{ book.title }}</li>
+    <li>Author: {{ book.author }}</li>
+</ul>
+
+<h1>Reviews</h1>
+<ul>
+    <li></li>
+</ul>
 {% endblock %}

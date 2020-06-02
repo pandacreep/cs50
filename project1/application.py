@@ -90,9 +90,16 @@ def books():
                             user_name=user_authorized(),
                             search_result=search_result)
 
-@app.route("/books/<int:book_id>")
-def book(book_id):
-    return render_template("book.html", message=book_id)
+@app.route("/books/<string:book_isbh>")
+def book(book_isbh):
+    # Make sure book exists.
+    book = db.execute("SELECT * FROM books WHERE isbh = :isbh", {"isbh": book_isbh}).fetchone()
+    if book is None:
+        return render_template("error.html", message="No such book")
+
+    # Get all reviews information
+    reviews = None
+    return render_template("book.html", book=book, reviews=reviews)
 
 
 # Check you anybody is logged in. Return user name. If nobody is logged in return empty string

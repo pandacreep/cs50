@@ -13,8 +13,8 @@ Search results
         <ul>
             {% for line in search_result %}
             <li>
-                <a href="{{ url_for('book', book_id=line.id) }}">
-                {{ line.isbh }}: 
+                <a href="{{ url_for('book', book_isbh=line.isbh) }}">
+                {{ line.isbh }}:
                 </a>
                 {{ line.title }}, {{ line.author }}
             </li>
