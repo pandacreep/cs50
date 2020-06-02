@@ -10,10 +10,18 @@ Book information
     <li>ISBH: {{ book.isbh }}</li>
     <li>Title: {{ book.title }}</li>
     <li>Author: {{ book.author }}</li>
+    <li>Publication year: {{ book.year }}</li>
 </ul>
 
 <h1>Reviews</h1>
 <ul>
-    <li></li>
+{% for review in reviews %}
+<li>
+    User: {{ review.user_name }} - Rate: {{ review.rate_score }} Comment: {{ review.rate_text }} 
+</li>
+{% endfor %}
 </ul>
+
+<h1>Submit your review</h1>
+
 {% endblock %}

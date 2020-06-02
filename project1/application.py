@@ -98,7 +98,13 @@ def book(book_isbh):
         return render_template("error.html", message="No such book")
 
     # Get all reviews information
-    reviews = None
+    sql_script = """
+    SELECT r.user_id, a.user_name, r.rate_score, r.rate_text
+    FROM reviews r
+    JOIN accounts a ON r.user_id = a.id
+    WHERE r.isbh = :isbh
+    """
+    reviews = db.execute(sql_script, {"isbh": book_isbh}).fetchall()
     return render_template("book.html", book=book, reviews=reviews)
 
 
