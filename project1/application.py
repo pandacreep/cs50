@@ -107,6 +107,10 @@ def book(book_isbh):
     reviews = db.execute(sql_script, {"isbh": book_isbh}).fetchall()
     return render_template("book.html", book=book, reviews=reviews)
 
+@app.route("/add_review", methods=["POST"])
+def add_review():
+    review = request.form.get("review")
+    return render_template("error.html", message=review)
 
 # Check you anybody is logged in. Return user name. If nobody is logged in return empty string
 def user_authorized():
