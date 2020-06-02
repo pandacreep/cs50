@@ -1,6 +1,6 @@
 import os, requests
 
-from flask import Flask, session, render_template, request
+from flask import Flask, session, render_template, request, jsonify
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -109,12 +109,10 @@ def book(book_isbh):
     try:
         key = "m4Op1odc9VVDWVL0UOC9A"
         res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": key, "isbns": book_isbh})
-        print("book_isbh:", book_isbh)
-        print("res:", res)
+        #print("book_isbh:", book_isbh)
+        #sprint("res:", res)
         goodreads_rate = res.json()['books'][0]['average_rating']
         goodreads_count = res.json()['books'][0]['work_reviews_count']
-        print("goodreads_rate:", goodreads_rate)
-        print("goodreads_count:", goodreads_count)
         goodreads_result = "This book has " +  str(goodreads_rate) + " rate from " + str(goodreads_count) + " reviews on Goodreads.com website"
     except:
         goodreads_result = "Some errors occur during connections to Goodreads.com website"
@@ -124,6 +122,35 @@ def book(book_isbh):
                             reviews=reviews,
                             goodreads_result=goodreads_result,
                             user_name=user_authorized())
+
+
+@app.route("/api//books/<string:book_isbh>")
+def book_api(book_isbh):
+    # Make sure book exists
+    book = db.execute("SELECT * FROM books WHERE isbh = :isbh", {"isbh": book_isbh}).fetchone()
+    if book is None:
+        return jsonify({"error": "404"}), 404
+    sql_script = """
+    SELECT count(isbh) count, avg(rate_score) avg
+    FROM reviews
+    WHERE isbh = :isbh
+    GROUP BY isbh
+    """
+    reviews = db.execute(sql_script, {"isbh": book_isbh}).fetchone()
+
+    # Make sure reviews exist
+    if reviews is None:
+        reviews = (0, 0)
+    print("reviews:", reviews)
+    return jsonify({
+        "title": book.title,
+        "author": book.author,
+        "year": book.year,
+        "isbn": book.isbh,
+        "review_count": str(reviews[0]),
+        "average_score": str(reviews[1])
+        })
+    print('book_api=> ending')
 
 
 @app.route("/add_review", methods=["POST"])
