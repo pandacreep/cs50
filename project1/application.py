@@ -92,7 +92,7 @@ def books():
 
 @app.route("/books/<int:book_id>")
 def book(book_id):
-    return render_template("error.html", message="Hello")
+    return render_template("book.html", message=book_id)
 
 
 # Check you anybody is logged in. Return user name. If nobody is logged in return empty string

@@ -14,8 +14,9 @@ Search results
             {% for line in search_result %}
             <li>
                 <a href="{{ url_for('book', book_id=line.id) }}">
-                {{ line.isbh }}: {{ line.title }}, {{ line.author }}
+                {{ line.isbh }}: 
                 </a>
+                {{ line.title }}, {{ line.author }}
             </li>
             {% endfor %}
         </ul>
