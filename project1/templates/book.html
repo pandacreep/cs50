@@ -5,29 +5,28 @@ Book information
 {% endblock %}
 
 {% block body %}
-<h1>Detailed Book Information</h1>
-<ul>
-    <li>ISBH: {{ book.isbh }}</li>
-    <li>Title: {{ book.title }}</li>
-    <li>Author: {{ book.author }}</li>
-    <li>Publication year: {{ book.year }}</li>
-</ul>
+    <h1>Detailed Book Information</h1>
+    <ul>
+        <li>ISBH: {{ book.isbh }}</li>
+        <li>Title: {{ book.title }}</li>
+        <li>Author: {{ book.author }}</li>
+        <li>Publication year: {{ book.year }}</li>
+    </ul>
 
-<h1>Reviews</h1>
-<ul>
-    {% for review in reviews %}
-    <li>
-        User: {{ review.user_name }} - Rate: {{ review.rate_score }} Comment: {{ review.rate_text }}
-    </li>
-    {% endfor %}
-</ul>
+    <h1>Reviews</h1>
+    <ul>
+        {% for review in reviews %}
+        <li>
+            User: {{ review.user_name }} - Rate: {{ review.rate_score }} Comment: {{ review.rate_text }}
+        </li>
+        {% endfor %}
+    </ul>
 
-<h1>Submit your review</h1>
-<form action="{{ url_for('add_review') }}" method="post">
-    <div class="form-group">
-        <input class="form-control" type="input" name="review" placeholder="Enter your comment">
-        <button class="btn btn-primary">Add comment</button>
-    </div>
-</form>
-
+    <h1>Submit your review</h1>
+    <form action="{{ url_for('add_review') }}" method="post">
+        <div class="form-group">
+            <input class="form-control" type="input" name="review" placeholder="Enter your comment">
+            <button class="btn btn-primary">Add comment</button>
+        </div>
+    </form>
 {% endblock %}

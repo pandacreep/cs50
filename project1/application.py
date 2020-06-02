@@ -105,12 +105,18 @@ def book(book_isbh):
     WHERE r.isbh = :isbh
     """
     reviews = db.execute(sql_script, {"isbh": book_isbh}).fetchall()
-    return render_template("book.html", book=book, reviews=reviews)
+    return render_template("book.html", book=book, reviews=reviews, user_name=user_authorized())
+
 
 @app.route("/add_review", methods=["POST"])
 def add_review():
     review = request.form.get("review")
-    return render_template("error.html", message=review)
+    check_review = db.execute("SELECT * FROM reviews WHERE user_id = :user_id"
+        , {"user_id": session["user_id"][0]})
+    if check_review.rowcount > 0:
+        return render_template("error.html", message="You already posted review on this book", user_name=user_authorized())
+    return render_template("error.html", message="You can post", user_name=user_authorized())
+
 
 # Check you anybody is logged in. Return user name. If nobody is logged in return empty string
 def user_authorized():
