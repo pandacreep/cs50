@@ -23,7 +23,6 @@ db = scoped_session(sessionmaker(bind=engine))
 # Initialize variables
 session={}
 
-
 @app.route("/")
 def index():
     return render_template("index.html", user_name=user_authorized())
@@ -105,17 +104,22 @@ def book(book_isbh):
     WHERE r.isbh = :isbh
     """
     reviews = db.execute(sql_script, {"isbh": book_isbh}).fetchall()
+    session["isbn"] = book_isbh
     return render_template("book.html", book=book, reviews=reviews, user_name=user_authorized())
 
 
 @app.route("/add_review", methods=["POST"])
 def add_review():
-    review = request.form.get("review")
-    check_review = db.execute("SELECT * FROM reviews WHERE user_id = :user_id"
-        , {"user_id": session["user_id"][0]})
+    rate_score = request.form.get("review_score")
+    rate_text = request.form.get("review_text")
+    check_review = db.execute("SELECT * FROM reviews WHERE user_id = :user_id AND isbh = :isbh"
+        , {"user_id": session["user_id"][0], "isbh": session["isbn"]})
     if check_review.rowcount > 0:
         return render_template("error.html", message="You already posted review on this book", user_name=user_authorized())
-    return render_template("error.html", message="You can post", user_name=user_authorized())
+    db.execute("INSERT INTO reviews (user_id, isbh, rate_score, rate_text) VALUES (:user_id, :isbh, :rate_score, :rate_text)",
+            {"user_id": session["user_id"][0], "isbh": session["isbn"], "rate_score": rate_score, "rate_text": rate_text})
+    db.commit()
+    return render_template("success_add_review.html", user_name=user_authorized())
 
 
 # Check you anybody is logged in. Return user name. If nobody is logged in return empty string

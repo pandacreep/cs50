@@ -25,7 +25,14 @@ Book information
     <h1>Submit your review</h1>
     <form action="{{ url_for('add_review') }}" method="post">
         <div class="form-group">
-            <input class="form-control" type="input" name="review" placeholder="Enter your comment">
+            <select class="form-control" name="review_score">
+                <option value=1>rate 1</option>
+                <option value=2>rate 2</option>
+                <option value=3>rate 3</option>
+                <option value=4>rate 4</option>
+                <option value=5>rate 5</option>
+            </select>
+            <input class="form-control" type="input" name="review_text" placeholder="Enter your comment">
             <button class="btn btn-primary">Add comment</button>
         </div>
     </form>
