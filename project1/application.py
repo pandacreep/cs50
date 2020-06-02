@@ -1,4 +1,4 @@
-import os
+import os, requests
 
 from flask import Flask, session, render_template, request
 from flask_session import Session
@@ -105,7 +105,25 @@ def book(book_isbh):
     """
     reviews = db.execute(sql_script, {"isbh": book_isbh}).fetchall()
     session["isbn"] = book_isbh
-    return render_template("book.html", book=book, reviews=reviews, user_name=user_authorized())
+
+    try:
+        key = "m4Op1odc9VVDWVL0UOC9A"
+        res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": key, "isbns": book_isbh})
+        print("book_isbh:", book_isbh)
+        print("res:", res)
+        goodreads_rate = res.json()['books'][0]['average_rating']
+        goodreads_count = res.json()['books'][0]['work_reviews_count']
+        print("goodreads_rate:", goodreads_rate)
+        print("goodreads_count:", goodreads_count)
+        goodreads_result = "This book has " +  str(goodreads_rate) + " rate from " + str(goodreads_count) + " reviews on Goodreads.com website"
+    except:
+        goodreads_result = "Some errors occur during connections to Goodreads.com website"
+    print(goodreads_result)
+    return render_template("book.html",
+                            book=book,
+                            reviews=reviews,
+                            goodreads_result=goodreads_result,
+                            user_name=user_authorized())
 
 
 @app.route("/add_review", methods=["POST"])
