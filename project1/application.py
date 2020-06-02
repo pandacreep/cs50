@@ -71,8 +71,8 @@ def log_out():
     return render_template("index.html", user_name=user_authorized())
 
 
-@app.route("/search", methods=["POST"])
-def search():
+@app.route("/books", methods=["POST"])
+def books():
     if user_authorized() == "":
         return render_template("error.html", user_name=user_authorized(), message="Please login before making any search")
     search_string = request.form.get("search_string")
@@ -85,10 +85,14 @@ def search():
     """
     search_result = db.execute(sql_script, {"search_string": search_string})
     if search_result.rowcount == 0:
-        return render_template("search_result.html", user_name=user_authorized(), message="No results are found", search_result=search_result)
-    return render_template("search_result.html",
+        return render_template("books.html", user_name=user_authorized(), message="No results are found", search_result=search_result)
+    return render_template("books.html",
                             user_name=user_authorized(),
                             search_result=search_result)
+
+@app.route("/books/<int:book_id>")
+def book(book_id):
+    return render_template("error.html", message="Hello")
 
 
 # Check you anybody is logged in. Return user name. If nobody is logged in return empty string
