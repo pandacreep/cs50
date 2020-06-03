@@ -67,3 +67,8 @@ Page with notification about successful login.
 
 # templates/success_register.html
 Page with notification about successful registration in the system.
+
+# timestamps for video submitted
+Search (showing multiple results for a query) - 02:14, 03:20
+Individual book page showing leaving a review - 01:21, 01:57
+API page - 02:34
